@@ -1,0 +1,32 @@
+{
+  "name": "setup-gh-pr-comment",
+  "private": true,
+  "description": "Setup gh-pr-comment",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "tsc && ncc build",
+    "fmt": "prettier --write **/*.ts",
+    "lint": "eslint \"./src/**/*.{js,ts}\"",
+    "typecheck": "tsc --noEmit"
+  },
+  "author": "at-wat",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@actions/core": "^1.2.6",
+    "@actions/http-client": "^1.0.6",
+    "@actions/io": "^1.0.2",
+    "@actions/tool-cache": "^1.6.1",
+    "@octokit/rest": "^18.5.3",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "@types/node": "^15.0.1",
+    "@types/uuid": "^8.3.0",
+    "@typescript-eslint/eslint-plugin": "^4.22.0",
+    "@typescript-eslint/parser": "^4.22.0",
+    "@zeit/ncc": "^0.22.3",
+    "eslint": "^7.25.0",
+    "prettier": "^1.17.1",
+    "typescript": "^3.8.3"
+  }
+}
