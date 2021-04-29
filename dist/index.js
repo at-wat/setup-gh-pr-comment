@@ -3618,6 +3618,7 @@ const os_1 = __importDefault(__webpack_require__(87));
 const path_1 = __importDefault(__webpack_require__(622));
 const uuid_1 = __webpack_require__(62);
 const atWatGpgFingerprint = '358B DF63 B4AE D76A 871A  E62E 1BF1 686B 468C 35B2';
+const gpgKeyserver = '--keyserver keys.gnupg.net';
 const [owner, repo] = ['at-wat', 'gh-pr-comment'];
 let osPlat = os_1.default.platform();
 if (osPlat === 'win32') {
@@ -3627,10 +3628,9 @@ let osArch = os_1.default.arch();
 if (osArch === 'x64') {
     osArch = 'amd64';
 }
-const regexPlatArch = new RegExp(`^gh-pr-comment_[0-9]+\.[0-9]+\.[0-9]+_${osPlat}_${osArch}\.(tar\.gz|zip)$`);
-const version = 'latest'; //core.getInput('version')
-const token = `${process.env.GITHUB_TOKEN}`; //core.getInput('token')
-const auth = `token ${token}`;
+const regexPlatArch = new RegExp(`^gh-pr-comment_[0-9]+\\.[0-9]+\\.[0-9]+_${osPlat}_${osArch}\\.(tar\\.gz|zip)$`);
+const version = core.getInput('version');
+const token = core.getInput('token');
 const octokit = new rest_1.Octokit({ auth: token });
 const install = (release) => __awaiter(void 0, void 0, void 0, function* () {
     let asset;
@@ -3667,7 +3667,7 @@ const install = (release) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const tempGpgDirectory = path_1.default.join(tempDirectory, '.gnupg');
         yield io.mkdirP(tempGpgDirectory);
-        child_process_1.default.execSync(`gpg --homedir "${tempGpgDirectory}" --recv-keys "${atWatGpgFingerprint}"`);
+        child_process_1.default.execSync(`gpg --homedir "${tempGpgDirectory}" ${gpgKeyserver} --recv-keys "${atWatGpgFingerprint}"`);
         child_process_1.default.execSync(`gpg --homedir "${tempGpgDirectory}" --verify "${signaturePath}" "${checksumPath}"`);
         child_process_1.default.execSync(`sha256sum --check "${checksumPath}" --ignore-missing`, {
             cwd: tempDirectory,
