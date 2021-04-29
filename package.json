@@ -12,21 +12,21 @@
   "author": "at-wat",
   "license": "Apache-2.0",
   "dependencies": {
-    "@actions/core": "^1.2.6",
-    "@actions/http-client": "^1.0.6",
-    "@actions/io": "^1.0.2",
-    "@actions/tool-cache": "^1.6.1",
-    "@octokit/rest": "^18.5.3",
-    "uuid": "^8.3.2"
+    "@actions/core": "1.2.7",
+    "@actions/http-client": "1.0.11",
+    "@actions/io": "1.1.0",
+    "@actions/tool-cache": "1.6.1",
+    "@octokit/rest": "18.5.3",
+    "uuid": "8.3.2"
   },
   "devDependencies": {
-    "@types/node": "^15.0.1",
-    "@types/uuid": "^8.3.0",
-    "@typescript-eslint/eslint-plugin": "^4.22.0",
-    "@typescript-eslint/parser": "^4.22.0",
-    "@zeit/ncc": "^0.22.3",
-    "eslint": "^7.25.0",
-    "prettier": "^1.17.1",
-    "typescript": "^3.8.3"
+    "@types/node": "15.0.1",
+    "@types/uuid": "8.3.0",
+    "@typescript-eslint/eslint-plugin": "4.22.0",
+    "@typescript-eslint/parser": "4.22.0",
+    "@zeit/ncc": "0.22.3",
+    "eslint": "7.25.0",
+    "prettier": "1.19.1",
+    "typescript": "3.9.9"
   }
 }
