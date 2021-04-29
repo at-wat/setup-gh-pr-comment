@@ -1,4 +1,4 @@
-name: unit-test
+name: e2e-test
 on:
   pull_request:
     branches: master
@@ -9,9 +9,8 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Set-up latest
+      - uses: actions/checkout@v2
+      - name: setup latest
         uses: ./
-      - name: Post comment
+      - name: post comment
         run: gh-pr-comment "✔ OK" "gh-pr-comment successfully installed"
