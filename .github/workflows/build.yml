@@ -16,13 +16,13 @@ jobs:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: ${{ runner.os }}-node-
-      - name: install
+      - name: Install
         run: npm install
-      - name: eslint
+      - name: Check eslint
         run: npm run lint
-      - name: typecheck
+      - name: Check type
         run: npm run typecheck
-      - name: build
+      - name: Build
         run: npm run build
-      - name: check dist
+      - name: Check dist
         run: git diff --exit-code

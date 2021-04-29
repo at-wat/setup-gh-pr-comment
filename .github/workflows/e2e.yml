@@ -13,7 +13,10 @@ jobs:
       issues: write
     steps:
       - uses: actions/checkout@v2
-      - name: setup latest
+      - name: Setup latest
         uses: ./
-      - name: post comment
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          version: latest
+      - name: Post comment
         run: gh-pr-comment "✔ OK" "gh-pr-comment successfully installed"
