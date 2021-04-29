@@ -1,9 +1,9 @@
 name: e2e-test
 on:
   pull_request:
-    branches: master
+    branches: main
   push:
-    branches: master
+    branches: main
 
 jobs:
   test:
@@ -13,7 +13,12 @@ jobs:
       issues: write
     steps:
       - uses: actions/checkout@v2
-      - name: setup latest
+      - name: Setup latest
         uses: ./
-      - name: post comment
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          version: latest
+      - name: Post comment
         run: gh-pr-comment "✔ OK" "gh-pr-comment successfully installed"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
