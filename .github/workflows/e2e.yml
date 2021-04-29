@@ -20,3 +20,5 @@ jobs:
           version: latest
       - name: Post comment
         run: gh-pr-comment "✔ OK" "gh-pr-comment successfully installed"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
