@@ -1,0 +1,19 @@
+name: e2e-test
+on:
+  pull_request:
+    branches: master
+  push:
+    branches: master
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      issues: write
+    steps:
+      - uses: actions/checkout@v2
+      - name: setup latest
+        uses: ./
+      - name: post comment
+        run: gh-pr-comment "✔ OK" "gh-pr-comment successfully installed"
