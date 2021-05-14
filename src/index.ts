@@ -12,9 +12,6 @@ import { v4 as uuidV4 } from 'uuid'
 
 type Release = Endpoints['GET /repos/{owner}/{repo}/releases/latest']['response']
 
-const atWatGpgFingerprint = '358B DF63 B4AE D76A 871A  E62E 1BF1 686B 468C 35B2'
-const gpgKeyserver = '--keyserver pool.sks-keyservers.net'
-
 const [owner, repo] = ['at-wat', 'gh-pr-comment']
 
 let osPlat: string = os.platform()
@@ -74,8 +71,10 @@ const install = async (release: Release) => {
   try {
     const tempGpgDirectory = path.join(tempDirectory, '.gnupg')
     await io.mkdirP(tempGpgDirectory)
+
+    const pubKeyPath = path.join(__dirname, '..', 'at-wat.gpg')
     cp.execSync(
-      `gpg --homedir "${tempGpgDirectory}" ${gpgKeyserver} --recv-keys "${atWatGpgFingerprint}"`,
+      `gpg --homedir "${tempGpgDirectory}" --fingerprint --import ${pubKeyPath}`,
     )
     cp.execSync(
       `gpg --homedir "${tempGpgDirectory}" --verify "${signaturePath}" "${checksumPath}"`,
