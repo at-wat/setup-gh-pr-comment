@@ -3618,7 +3618,7 @@ const os_1 = __importDefault(__webpack_require__(87));
 const path_1 = __importDefault(__webpack_require__(622));
 const uuid_1 = __webpack_require__(62);
 const atWatGpgFingerprint = '358B DF63 B4AE D76A 871A  E62E 1BF1 686B 468C 35B2';
-const gpgKeyserver = '--keyserver keys.gnupg.net';
+const gpgKeyserver = '--keyserver pool.sks-keyservers.net';
 const [owner, repo] = ['at-wat', 'gh-pr-comment'];
 let osPlat = os_1.default.platform();
 if (osPlat === 'win32') {
