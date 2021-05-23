@@ -15,8 +15,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-        with:
-          persist-credentials: false
       - uses: actions/setup-node@v2
       - uses: actions/cache@v2
         with:
@@ -40,6 +38,4 @@ jobs:
           git add dist
           git commit -m "Update dist"
 
-          echo -e "machine github.com\nlogin ${{ secrets.GITHUB_TOKEN }}" > ~/.netrc
           git push origin ${{ github.event.pull_request.head.ref }}
-          rm ~/.netrc
