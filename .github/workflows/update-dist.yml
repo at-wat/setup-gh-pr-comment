@@ -14,9 +14,25 @@ jobs:
       && contains(github.event.comment.body, '/update-dist')
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/github-script@v3
+        id: get-pr
+        with:
+          script: |
+            const req = {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            }
+            core.info(`Getting PR ${req.pull_number}`)
+            try {
+              const result = await github.pulls.get(req)
+              return result.data
+            } catch (err) {
+              core.setFailed(`Request failed with error ${err}`)
+            }
       - uses: actions/checkout@v2
         with:
-          ref: ${{ github.event.pull_request.head.ref }}
+          ref: ${{ fromJSON(steps.get-pr.outputs.result).head.sha }}
       - uses: actions/setup-node@v2
       - uses: actions/cache@v2
         with:
@@ -40,4 +56,4 @@ jobs:
           git add dist
           git commit -m "Update dist"
 
-          git push origin ${{ github.event.pull_request.head.ref }}
+          git push origin ${{ fromJSON(steps.get-pr.outputs.result).head.ref }}
