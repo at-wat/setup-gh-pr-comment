@@ -10,7 +10,7 @@ jobs:
       && contains(github.event.comment.body, '/update-dist')
     runs-on: ubuntu-latest
     steps:
-      - runs: echo ${{ github.event.issue.user.id }} ${{ github.event.repository.owner.id }}
+      - run: echo ${{ github.event.issue.user.id }} ${{ github.event.repository.owner.id }}
       - uses: actions/checkout@v2
         with:
           persist-credentials: false
