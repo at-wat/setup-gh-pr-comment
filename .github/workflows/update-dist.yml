@@ -1,0 +1,41 @@
+name: update-dist
+on:
+  issue_comment: [created]
+
+jobs:
+  update-dist:
+    name: Update dist
+    if: github.event.issue.pull_request
+      && github.event.issue.user.id == github.event.repository.owner.id
+      && contains(github.event.comment.body, '/update-dist')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v2
+      - uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: ${{ runner.os }}-node-
+      - name: Install
+        run: npm install
+      - name: Build
+        run: npm run build
+      - name: Commit
+        run: |
+          if git diff --exit-code; then
+            echo "Up-to-date"
+            exit 0
+          fi
+
+          git config --global user.name "Atsushi Watanabe"
+          git config --global user.email "atsushi.w@ieee.org"
+
+          git add dist
+          git commit -m "Update dist"
+
+          echo -e "machine github.com\nlogin ${{ secrets.GITHUB_TOKEN }}" > ~/.netrc
+          git push origin ${{ github.event.pull_request.head.ref }}
+          rm ~/.netrc
