@@ -12,6 +12,8 @@ import { v4 as uuidV4 } from 'uuid'
 
 type Release = Endpoints['GET /repos/{owner}/{repo}/releases/latest']['response']
 
+// test
+
 const [owner, repo] = ['at-wat', 'gh-pr-comment']
 
 let osPlat: string = os.platform()
