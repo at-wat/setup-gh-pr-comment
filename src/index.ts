@@ -12,9 +12,9 @@ import { v4 as uuidV4 } from 'uuid'
 
 type Release = Endpoints['GET /repos/{owner}/{repo}/releases/latest']['response']
 
-// test
-
 const [owner, repo] = ['at-wat', 'gh-pr-comment']
+
+console.log(owner)
 
 let osPlat: string = os.platform()
 if (osPlat === 'win32') {
