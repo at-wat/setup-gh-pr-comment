@@ -14,6 +14,8 @@ type Release = Endpoints['GET /repos/{owner}/{repo}/releases/latest']['response'
 
 const [owner, repo] = ['at-wat', 'gh-pr-comment']
 
+// test
+
 let osPlat: string = os.platform()
 if (osPlat === 'win32') {
   osPlat = 'windows'
