@@ -3,15 +3,17 @@ on:
   issue_comment:
     types: [created]
 
+permissions:
+  contents: write
+
 jobs:
   update-dist:
     name: Update dist
-    #if: ${{ github.event.issue.pull_request }}
+    if: github.event.issue.pull_request
+      && github.event.issue.user.id == github.event.repository.owner.id
+      && contains(github.event.comment.body, '/update-dist')
     runs-on: ubuntu-latest
     steps:
-      - run: |
-          echo ${{ github.event.issue.user.id }} ${{ github.event.repository.owner.id }}
-          echo ${{ github.event.comment.body }}
       - uses: actions/checkout@v2
         with:
           persist-credentials: false
@@ -39,5 +41,5 @@ jobs:
           git commit -m "Update dist"
 
           echo -e "machine github.com\nlogin ${{ secrets.GITHUB_TOKEN }}" > ~/.netrc
-          echo git push origin ${{ github.event.pull_request.head.ref }}
+          git push origin ${{ github.event.pull_request.head.ref }}
           rm ~/.netrc
