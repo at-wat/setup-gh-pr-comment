@@ -7,11 +7,10 @@ jobs:
   update-dist:
     name: Update dist
     if: github.event.issue.pull_request
+      && contains(github.event.comment.body, '/update-dist')
     runs-on: ubuntu-latest
     steps:
-      - runs: |
-          echo ${{ github.event.issue.user.id }} ${{ github.event.repository.owner.id }}
-          echo ${{ github.event.comment.body }}
+      - runs: echo ${{ github.event.issue.user.id }} ${{ github.event.repository.owner.id }}
       - uses: actions/checkout@v2
         with:
           persist-credentials: false
