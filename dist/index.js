@@ -3632,6 +3632,7 @@ const os_1 = __importDefault(__webpack_require__(87));
 const path_1 = __importDefault(__webpack_require__(622));
 const uuid_1 = __webpack_require__(62);
 const [owner, repo] = ['at-wat', 'gh-pr-comment'];
+// test
 let osPlat = os_1.default.platform();
 if (osPlat === 'win32') {
     osPlat = 'windows';
