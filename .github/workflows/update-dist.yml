@@ -10,7 +10,7 @@ jobs:
   update-dist:
     name: Update dist
     if: github.event.issue.pull_request
-      && github.event.issue.user.id == github.event.repository.owner.id
+      && github.event.comment.user.id == github.event.repository.owner.id
       && contains(github.event.comment.body, '/update-dist')
     runs-on: ubuntu-latest
     steps:
