@@ -3731,7 +3731,7 @@ const install = (release) => __awaiter(void 0, void 0, void 0, function* () {
     let asset;
     let checksum;
     let signature;
-    release.data.assets.forEach(a => {
+    release.data.assets.forEach((a) => {
         if (a.name.match(regexPlatArch)) {
             asset = a;
             return;
@@ -3753,12 +3753,27 @@ const install = (release) => __awaiter(void 0, void 0, void 0, function* () {
         core.setFailed('checksum not found');
         return;
     }
-    const archivePath = yield tc.downloadTool(asset.browser_download_url);
-    const checksumPath = yield tc.downloadTool(checksum.browser_download_url);
-    const signaturePath = yield tc.downloadTool(signature.browser_download_url);
+    const archivePath = yield tc
+        .downloadTool(asset.browser_download_url)
+        .catch((e) => core.setFailed(e.toString()));
+    const checksumPath = yield tc
+        .downloadTool(checksum.browser_download_url)
+        .catch((e) => core.setFailed(e.toString()));
+    const signaturePath = yield tc
+        .downloadTool(signature.browser_download_url)
+        .catch((e) => core.setFailed(e.toString()));
+    if (!archivePath || !checksumPath || !signaturePath) {
+        return;
+    }
     const tempDirectory = path_1.default.join(process.env['RUNNER_TEMP'] || '', uuid_1.v4());
-    yield io.mkdirP(tempDirectory);
-    yield io.cp(archivePath, path_1.default.join(tempDirectory, asset.name));
+    try {
+        yield io.mkdirP(tempDirectory);
+        yield io.cp(archivePath, path_1.default.join(tempDirectory, asset.name));
+    }
+    catch (error) {
+        core.setFailed(error.toString());
+        return;
+    }
     try {
         const tempGpgDirectory = path_1.default.join(tempDirectory, '.gnupg');
         yield io.mkdirP(tempGpgDirectory);
