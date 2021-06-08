@@ -10,7 +10,8 @@ import os from 'os'
 import path from 'path'
 import { v4 as uuidV4 } from 'uuid'
 
-type Release = Endpoints['GET /repos/{owner}/{repo}/releases/latest']['response']
+type Release =
+  Endpoints['GET /repos/{owner}/{repo}/releases/latest']['response']
 
 const [owner, repo] = ['at-wat', 'gh-pr-comment']
 
@@ -37,7 +38,7 @@ const install = async (release: Release) => {
   let checksum: typeof release.data.assets[0] | undefined
   let signature: typeof release.data.assets[0] | undefined
 
-  release.data.assets.forEach(a => {
+  release.data.assets.forEach((a) => {
     if (a.name.match(regexPlatArch)) {
       asset = a
       return
@@ -60,13 +61,28 @@ const install = async (release: Release) => {
     return
   }
 
-  const archivePath = await tc.downloadTool(asset.browser_download_url)
-  const checksumPath = await tc.downloadTool(checksum.browser_download_url)
-  const signaturePath = await tc.downloadTool(signature.browser_download_url)
+  const archivePath = await tc
+    .downloadTool(asset.browser_download_url)
+    .catch((e) => core.setFailed(e.toString()))
+  const checksumPath = await tc
+    .downloadTool(checksum.browser_download_url)
+    .catch((e) => core.setFailed(e.toString()))
+  const signaturePath = await tc
+    .downloadTool(signature.browser_download_url)
+    .catch((e) => core.setFailed(e.toString()))
+
+  if (!archivePath || !checksumPath || !signaturePath) {
+    return
+  }
 
   const tempDirectory = path.join(process.env['RUNNER_TEMP'] || '', uuidV4())
-  await io.mkdirP(tempDirectory)
-  await io.cp(archivePath, path.join(tempDirectory, asset.name))
+  try {
+    await io.mkdirP(tempDirectory)
+    await io.cp(archivePath, path.join(tempDirectory, asset.name))
+  } catch (error) {
+    core.setFailed(error.toString())
+    return
+  }
 
   try {
     const tempGpgDirectory = path.join(tempDirectory, '.gnupg')
