@@ -10036,7 +10036,7 @@ const Endpoints = {
   }
 };
 
-const VERSION = "5.5.0";
+const VERSION = "5.5.1";
 
 function endpointsToMethods(octokit, endpointsMap) {
   const newMethods = {};
@@ -10211,7 +10211,7 @@ var pluginRequestLog = __webpack_require__(916);
 var pluginPaginateRest = __webpack_require__(299);
 var pluginRestEndpointMethods = __webpack_require__(842);
 
-const VERSION = "18.7.0";
+const VERSION = "18.7.1";
 
 const Octokit = core.Octokit.plugin(pluginRequestLog.requestLog, pluginRestEndpointMethods.legacyRestEndpointMethods, pluginPaginateRest.paginateRest).defaults({
   userAgent: `octokit-rest.js/${VERSION}`
