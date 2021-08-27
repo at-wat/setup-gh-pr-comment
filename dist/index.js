@@ -3826,25 +3826,32 @@ const install = (release) => __awaiter(void 0, void 0, void 0, function* () {
         core.setFailed('checksum not found');
         return;
     }
+    const errorCatcher = (e) => {
+        if (typeof (e === null || e === void 0 ? void 0 : e.toString) === 'function') {
+            core.setFailed(e.toString());
+            return;
+        }
+        core.setFailed(e);
+    };
     const archivePath = yield tc
         .downloadTool(asset.browser_download_url)
-        .catch((e) => core.setFailed(e.toString()));
+        .catch(errorCatcher);
     const checksumPath = yield tc
         .downloadTool(checksum.browser_download_url)
-        .catch((e) => core.setFailed(e.toString()));
+        .catch(errorCatcher);
     const signaturePath = yield tc
         .downloadTool(signature.browser_download_url)
-        .catch((e) => core.setFailed(e.toString()));
+        .catch(errorCatcher);
     if (!archivePath || !checksumPath || !signaturePath) {
         return;
     }
-    const tempDirectory = path_1.default.join(process.env['RUNNER_TEMP'] || '', uuid_1.v4());
+    const tempDirectory = path_1.default.join(process.env['RUNNER_TEMP'] || '', (0, uuid_1.v4)());
     try {
         yield io.mkdirP(tempDirectory);
         yield io.cp(archivePath, path_1.default.join(tempDirectory, asset.name));
     }
-    catch (error) {
-        core.setFailed(error.toString());
+    catch (e) {
+        errorCatcher(e);
         return;
     }
     try {
@@ -3857,8 +3864,8 @@ const install = (release) => __awaiter(void 0, void 0, void 0, function* () {
             cwd: tempDirectory,
         });
     }
-    catch (error) {
-        core.setFailed(error.toString());
+    catch (e) {
+        errorCatcher(e);
         return;
     }
     finally {
