@@ -61,15 +61,23 @@ const install = async (release: Release) => {
     return
   }
 
+  const errorCatcher = (e: any) => {
+    if (typeof e?.toString === 'function') {
+      core.setFailed(e.toString())
+      return
+    }
+    core.setFailed(e)
+  }
+
   const archivePath = await tc
     .downloadTool(asset.browser_download_url)
-    .catch((e) => core.setFailed(e.toString()))
+    .catch(errorCatcher)
   const checksumPath = await tc
     .downloadTool(checksum.browser_download_url)
-    .catch((e) => core.setFailed(e.toString()))
+    .catch(errorCatcher)
   const signaturePath = await tc
     .downloadTool(signature.browser_download_url)
-    .catch((e) => core.setFailed(e.toString()))
+    .catch(errorCatcher)
 
   if (!archivePath || !checksumPath || !signaturePath) {
     return
@@ -79,8 +87,8 @@ const install = async (release: Release) => {
   try {
     await io.mkdirP(tempDirectory)
     await io.cp(archivePath, path.join(tempDirectory, asset.name))
-  } catch (error) {
-    core.setFailed(error.toString())
+  } catch (e) {
+    errorCatcher(e)
     return
   }
 
@@ -98,8 +106,8 @@ const install = async (release: Release) => {
     cp.execSync(`sha256sum --check "${checksumPath}" --ignore-missing`, {
       cwd: tempDirectory,
     })
-  } catch (error) {
-    core.setFailed(error.toString())
+  } catch (e) {
+    errorCatcher(e)
     return
   } finally {
     await io.rmRF(tempDirectory)
