@@ -25,7 +25,7 @@ jobs:
             }
             core.info(`Getting PR ${req.pull_number}`)
             try {
-              const result = await github.pulls.get(req)
+              const result = await github.rest.pulls.get(req)
               return result.data
             } catch (err) {
               core.setFailed(`Request failed with error ${err}`)
