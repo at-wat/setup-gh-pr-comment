@@ -61,7 +61,7 @@ const install = async (release: Release) => {
     return
   }
 
-  const errorCatcher = (e: any) => {
+  const errorCatcher = (e: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
     if (typeof e?.toString === 'function') {
       core.setFailed(e.toString())
       return
