@@ -22,3 +22,15 @@ jobs:
         run: gh-pr-comment "✔ OK" "gh-pr-comment successfully installed"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get PR number
+        if: github.event_name == 'push'
+        id: pr_number
+        uses: kamatama41/get-pr-number-action@v0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Post comment with exec wrapper
+        run: gh-pr-comment-exec -c -- ls -x --color=always /
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ steps.pr_number.outputs.number }}
