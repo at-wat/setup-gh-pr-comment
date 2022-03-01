@@ -30,7 +30,7 @@ jobs:
             } catch (err) {
               core.setFailed(`Request failed with error ${err}`)
             }
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           ref: ${{ fromJSON(steps.get-pr.outputs.result).head.ref }}
       - uses: actions/setup-node@v2
