@@ -34,7 +34,7 @@ jobs:
         with:
           ref: ${{ fromJSON(steps.get-pr.outputs.result).head.ref }}
       - uses: actions/setup-node@v3
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
