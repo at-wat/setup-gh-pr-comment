@@ -1,5 +1,15 @@
 {
   "extends": [
     "config:base"
+  ],
+  "packageRules": [
+    {
+      "matchPackagePatterns": [
+        "^@typescript-eslint/",
+        "^eslint$",
+        "^prettier$"
+      ],
+      "groupName": "js formatter and linter"
+    }
   ]
 }
