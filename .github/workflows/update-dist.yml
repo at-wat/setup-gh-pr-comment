@@ -1,0 +1,68 @@
+name: update-dist
+on:
+  issue_comment:
+    types: [created]
+  push:
+    branches:
+      - renovate/*
+
+permissions:
+  contents: write
+
+jobs:
+  update-dist:
+    name: Update dist
+    if: (github.event.issue.pull_request
+        && github.event.comment.user.id == github.event.repository.owner.id
+        && contains(github.event.comment.body, '/update-dist')
+      ) || github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v6
+        id: get-pr
+        with:
+          script: |
+            if (context.eventName === 'push') {
+              const head = context.ref.replace(/^refs\/heads\//, '')
+              core.setOutput('head', head)
+              return
+            }
+            const req = {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            }
+            core.info(`Getting PR ${req.pull_number}`)
+            try {
+              const result = await github.rest.pulls.get(req)
+              core.setOutput('head', result.data.head.ref)
+            } catch (err) {
+              core.setFailed(`Request failed with error ${err}`)
+            }
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ steps.get-pr.outputs.head }}
+      - uses: actions/setup-node@v3
+      - uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: ${{ runner.os }}-node-
+      - name: Install
+        run: npm install
+      - name: Build
+        run: npm run build
+      - name: Update
+        run: |
+          if git diff --exit-code; then
+            echo "Up-to-date"
+            exit 0
+          fi
+
+          git config --global user.name "Atsushi Watanabe"
+          git config --global user.email "atsushi.w@ieee.org"
+
+          git add dist
+          git commit --amend --no-edit
+
+          git push -f origin ${{ steps.get-pr.outputs.head }}

@@ -1,0 +1,15 @@
+name: 'Setup gh-pr-comment'
+description: 'Setup gh-pr-comment and add it to the PATH'
+inputs:
+  version:
+    description: 'The version to download and use. Latest by default.'
+    default: latest
+  token:
+    description: 'Used to download released files.'
+    default: ${{ github.token }}
+runs:
+  using: 'node16'
+  main: 'dist/index.js'
+branding:
+  icon: 'download'
+  color: 'white'
