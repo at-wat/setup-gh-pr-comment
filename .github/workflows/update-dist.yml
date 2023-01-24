@@ -22,6 +22,11 @@ jobs:
         id: get-pr
         with:
           script: |
+            if (context.eventName === 'push') {
+              const head = context.ref.replace(/^refs\/heads\//, '')
+              core.setOutput('head', head)
+              return
+            }
             const req = {
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -30,13 +35,13 @@ jobs:
             core.info(`Getting PR ${req.pull_number}`)
             try {
               const result = await github.rest.pulls.get(req)
-              return result.data
+              core.setOutput('head', result.data.head.ref)
             } catch (err) {
               core.setFailed(`Request failed with error ${err}`)
             }
       - uses: actions/checkout@v3
         with:
-          ref: ${{ fromJSON(steps.get-pr.outputs.result).head.ref }}
+          ref: ${{ steps.get-pr.outputs.head }}
       - uses: actions/setup-node@v3
       - uses: actions/cache@v3
         with:
@@ -60,4 +65,4 @@ jobs:
           git add dist
           git commit --amend --no-edit
 
-          git push -f origin ${{ fromJSON(steps.get-pr.outputs.result).head.ref }}
+          git push -f origin ${{ steps.get-pr.outputs.head }}
