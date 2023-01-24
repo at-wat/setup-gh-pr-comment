@@ -2,6 +2,9 @@ name: update-dist
 on:
   issue_comment:
     types: [created]
+  push:
+    branches:
+      - renovate/*
 
 permissions:
   contents: write
@@ -9,9 +12,10 @@ permissions:
 jobs:
   update-dist:
     name: Update dist
-    if: github.event.issue.pull_request
-      && github.event.comment.user.id == github.event.repository.owner.id
-      && contains(github.event.comment.body, '/update-dist')
+    if: (github.event.issue.pull_request
+        && github.event.comment.user.id == github.event.repository.owner.id
+        && contains(github.event.comment.body, '/update-dist')
+      ) || github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/github-script@v6
@@ -54,6 +58,6 @@ jobs:
           git config --global user.email "atsushi.w@ieee.org"
 
           git add dist
-          git commit -m "Update dist"
+          git commit --amend --no-edit
 
-          git push origin ${{ fromJSON(steps.get-pr.outputs.result).head.ref }}
+          git push -f origin ${{ fromJSON(steps.get-pr.outputs.result).head.ref }}
