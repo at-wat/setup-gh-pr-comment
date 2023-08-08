@@ -31,12 +31,17 @@ const regexPlatArch = new RegExp(
 const version: string = core.getInput('version')
 const token: string = core.getInput('token')
 
-const octokit = new Octokit({ auth: token })
+const octokit = new Octokit({
+  auth: token,
+  request: {
+    fetch: fetch,
+  },
+})
 
 const install = async (release: Release) => {
-  let asset: typeof release.data.assets[0] | undefined
-  let checksum: typeof release.data.assets[0] | undefined
-  let signature: typeof release.data.assets[0] | undefined
+  let asset: (typeof release.data.assets)[0] | undefined
+  let checksum: (typeof release.data.assets)[0] | undefined
+  let signature: (typeof release.data.assets)[0] | undefined
 
   release.data.assets.forEach((a) => {
     if (a.name.match(regexPlatArch)) {
@@ -61,7 +66,8 @@ const install = async (release: Release) => {
     return
   }
 
-  const errorCatcher = (e: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
+  const errorCatcher = (e: any) => {
+    // eslint-disable-line @typescript-eslint/no-explicit-any
     if (typeof e?.toString === 'function') {
       core.setFailed(e.toString())
       return

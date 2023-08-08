@@ -11243,7 +11243,12 @@ if (osArch === 'x64') {
 const regexPlatArch = new RegExp(`^gh-pr-comment_[0-9]+\\.[0-9]+\\.[0-9]+_${osPlat}_${osArch}\\.(tar\\.gz|zip)$`);
 const version = core.getInput('version');
 const token = core.getInput('token');
-const octokit = new rest_1.Octokit({ auth: token });
+const octokit = new rest_1.Octokit({
+    auth: token,
+    request: {
+        fetch: fetch,
+    },
+});
 const install = (release) => __awaiter(void 0, void 0, void 0, function* () {
     let asset;
     let checksum;
@@ -11271,6 +11276,7 @@ const install = (release) => __awaiter(void 0, void 0, void 0, function* () {
         return;
     }
     const errorCatcher = (e) => {
+        // eslint-disable-line @typescript-eslint/no-explicit-any
         if (typeof (e === null || e === void 0 ? void 0 : e.toString) === 'function') {
             core.setFailed(e.toString());
             return;
