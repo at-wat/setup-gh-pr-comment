@@ -34035,8 +34035,8 @@ const install = (release) => __awaiter(void 0, void 0, void 0, function* () {
         core.setFailed('checksum not found');
         return;
     }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const errorCatcher = (e) => {
-        // eslint-disable-line @typescript-eslint/no-explicit-any
         if (typeof (e === null || e === void 0 ? void 0 : e.toString) === 'function') {
             core.setFailed(e.toString());
             return;
