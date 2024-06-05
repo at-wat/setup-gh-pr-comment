@@ -44,18 +44,16 @@ jobs:
           ref: ${{ steps.get-pr.outputs.head }}
           fetch-depth: 0
           token: ${{ secrets.DIST_UPDATE_TOKEN }}
+      - name: Enable pnpm
+        run: corepack enable pnpm
       - uses: actions/setup-node@v4
         with:
+          cache: pnpm
           node-version-file: .node-version
-      - uses: actions/cache@v4
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: ${{ runner.os }}-node-
       - name: Install
-        run: npm install
+        run: pnpm install
       - name: Build
-        run: npm run build
+        run: pnpm build
       - name: Update
         run: |
           if git diff --exit-code; then
