@@ -7,5 +7,10 @@
     "strict": true,
     "esModuleInterop": true
   },
-  "exclude": ["node_modules"]
+  "exclude": [
+    ".git",
+    "dist",
+    "lib",
+    "node_modules"
+  ]
 }
