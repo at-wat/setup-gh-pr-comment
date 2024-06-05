@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc && ncc build",
     "fmt": "prettier --write **/*.ts",
-    "lint": "eslint \"./src/**/*.{js,ts}\"",
+    "lint": "eslint",
     "typecheck": "tsc --noEmit"
   },
   "author": "at-wat",
