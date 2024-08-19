@@ -26,8 +26,8 @@
     "@types/node": "20.14.1",
     "@types/uuid": "9.0.8",
     "@vercel/ncc": "^0.38.0",
-    "eslint": "9.4.0",
-    "prettier": "3.3.0",
+    "eslint": "9.9.0",
+    "prettier": "3.3.3",
     "typescript": "5.4.5"
   },
   "packageManager": "pnpm@9.7.1"
