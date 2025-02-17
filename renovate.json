@@ -5,11 +5,20 @@
   "packageRules": [
     {
       "matchPackagePatterns": [
-        "^@typescript-eslint/",
+        "^@eslint/js$",
         "^eslint$",
-        "^prettier$"
+        "^prettier$",
+        "^typescript-eslint$"
       ],
       "groupName": "js formatter and linter"
+    },
+    {
+      "matchPackagePatterns": ["^@octokit/"],
+      "groupName": "octokit"
+    },
+    {
+      "matchPackagePatterns": ["^@actions/"],
+      "groupName": "actions"
     }
   ]
 }
