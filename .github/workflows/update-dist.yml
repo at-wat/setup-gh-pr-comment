@@ -44,7 +44,7 @@ jobs:
           ref: ${{ steps.get-pr.outputs.head }}
           fetch-depth: 0
           token: ${{ secrets.DIST_UPDATE_TOKEN }}
-      - run: corepack enable pnpm
+      - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
           cache: pnpm
