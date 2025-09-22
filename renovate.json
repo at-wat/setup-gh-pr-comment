@@ -1,24 +1,22 @@
 {
-  "extends": [
-    "config:base"
-  ],
+  "extends": ["config:recommended"],
   "packageRules": [
     {
-      "matchPackagePatterns": [
-        "^@eslint/js$",
-        "^eslint$",
-        "^prettier$",
-        "^typescript-eslint$"
-      ],
-      "groupName": "js formatter and linter"
+      "groupName": "js formatter and linter",
+      "matchPackageNames": [
+        "/^@eslint/js$/",
+        "/^eslint$/",
+        "/^prettier$/",
+        "/^typescript-eslint$/"
+      ]
     },
     {
-      "matchPackagePatterns": ["^@octokit/"],
-      "groupName": "octokit"
+      "groupName": "octokit",
+      "matchPackageNames": ["/^@octokit//"]
     },
     {
-      "matchPackagePatterns": ["^@actions/"],
-      "groupName": "actions"
+      "groupName": "actions",
+      "matchPackageNames": ["/^@actions//"]
     }
   ]
 }
