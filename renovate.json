@@ -11,6 +11,10 @@
       ]
     },
     {
+      "matchDatasources": ["npm"],
+      "minimumReleaseAge": "7 days"
+    },
+    {
       "groupName": "octokit",
       "matchPackageNames": ["/^@octokit//"]
     },
