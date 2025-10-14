@@ -2,16 +2,14 @@ import * as core from '@actions/core'
 import * as io from '@actions/io'
 import * as tc from '@actions/tool-cache'
 
-import { Octokit } from '@octokit/action'
-import { Endpoints } from '@octokit/types'
+import { Octokit, RestEndpointMethodTypes } from '@octokit/action'
 
 import cp from 'child_process'
 import os from 'os'
 import path from 'path'
 import { v4 as uuidV4 } from 'uuid'
 
-type Release =
-  Endpoints['GET /repos/{owner}/{repo}/releases/latest']['response']
+type Release = RestEndpointMethodTypes['repos']['getLatestRelease']['response']
 
 const [owner, repo] = ['at-wat', 'gh-pr-comment']
 
