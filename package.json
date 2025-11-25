@@ -16,7 +16,7 @@
     "@actions/http-client": "3.0.0",
     "@actions/io": "2.0.0",
     "@actions/tool-cache": "2.0.2",
-    "@octokit/action": "8.0.2",
+    "@octokit/action": "8.0.4",
     "uuid": "13.0.0"
   },
   "devDependencies": {
