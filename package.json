@@ -12,8 +12,8 @@
   "author": "at-wat",
   "license": "Apache-2.0",
   "dependencies": {
-    "@actions/core": "2.0.1",
-    "@actions/http-client": "3.0.0",
+    "@actions/core": "2.0.2",
+    "@actions/http-client": "3.0.1",
     "@actions/io": "2.0.0",
     "@actions/tool-cache": "2.0.2",
     "@octokit/action": "8.0.4",
