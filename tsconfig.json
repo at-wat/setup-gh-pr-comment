@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "nodenext",
+    "target": "esnext",
     "module": "nodenext",
     "outDir": "./lib",
     "rootDir": "./src",

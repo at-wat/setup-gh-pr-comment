@@ -94937,15 +94937,6 @@ var __importStar = (this && this.__importStar) || (function () {
         return result;
     };
 })();
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -94971,7 +94962,7 @@ const regexPlatArch = new RegExp(`^gh-pr-comment_[0-9]+\\.[0-9]+\\.[0-9]+_${osPl
 const version = core.getInput('version');
 const token = core.getInput('token');
 const octokit = new action_1.Octokit({ auth: token });
-const install = (release) => __awaiter(void 0, void 0, void 0, function* () {
+const install = async (release) => {
     let asset;
     let checksum;
     let signature;
@@ -94999,19 +94990,19 @@ const install = (release) => __awaiter(void 0, void 0, void 0, function* () {
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const errorCatcher = (e) => {
-        if (typeof (e === null || e === void 0 ? void 0 : e.toString) === 'function') {
+        if (typeof e?.toString === 'function') {
             core.setFailed(e.toString());
             return;
         }
         core.setFailed(e);
     };
-    const archivePath = yield tc
+    const archivePath = await tc
         .downloadTool(asset.browser_download_url)
         .catch(errorCatcher);
-    const checksumPath = yield tc
+    const checksumPath = await tc
         .downloadTool(checksum.browser_download_url)
         .catch(errorCatcher);
-    const signaturePath = yield tc
+    const signaturePath = await tc
         .downloadTool(signature.browser_download_url)
         .catch(errorCatcher);
     if (!archivePath || !checksumPath || !signaturePath) {
@@ -95019,8 +95010,8 @@ const install = (release) => __awaiter(void 0, void 0, void 0, function* () {
     }
     const tempDirectory = path_1.default.join(process.env['RUNNER_TEMP'] || '', (0, uuid_1.v4)());
     try {
-        yield io.mkdirP(tempDirectory);
-        yield io.cp(archivePath, path_1.default.join(tempDirectory, asset.name));
+        await io.mkdirP(tempDirectory);
+        await io.cp(archivePath, path_1.default.join(tempDirectory, asset.name));
     }
     catch (e) {
         errorCatcher(e);
@@ -95028,7 +95019,7 @@ const install = (release) => __awaiter(void 0, void 0, void 0, function* () {
     }
     try {
         const tempGpgDirectory = path_1.default.join(tempDirectory, '.gnupg');
-        yield io.mkdirP(tempGpgDirectory);
+        await io.mkdirP(tempGpgDirectory);
         const pubKeyPath = path_1.default.join(__dirname, '..', 'at-wat.gpg');
         child_process_1.default.execSync(`gpg --homedir "${tempGpgDirectory}" --fingerprint --import ${pubKeyPath}`);
         child_process_1.default.execSync(`gpg --homedir "${tempGpgDirectory}" --verify "${signaturePath}" "${checksumPath}"`);
@@ -95041,19 +95032,19 @@ const install = (release) => __awaiter(void 0, void 0, void 0, function* () {
         return;
     }
     finally {
-        yield io.rmRF(tempDirectory);
+        await io.rmRF(tempDirectory);
     }
     let extPath;
     switch (osPlat) {
         case 'win32':
-            extPath = yield tc.extractZip(archivePath);
+            extPath = await tc.extractZip(archivePath);
             break;
         default:
-            extPath = yield tc.extractTar(archivePath);
+            extPath = await tc.extractTar(archivePath);
             break;
     }
     core.addPath(extPath);
-});
+};
 if (version === 'latest') {
     octokit.rest.repos
         .getLatestRelease({
