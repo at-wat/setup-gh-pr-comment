@@ -3,6 +3,7 @@
   "private": true,
   "description": "Setup gh-pr-comment",
   "main": "src/index.ts",
+  "type": "module",
   "scripts": {
     "build": "tsc && ncc build",
     "fmt": "prettier --write **/*.ts",
