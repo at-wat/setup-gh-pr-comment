@@ -72195,25 +72195,13 @@ function getApiBaseUrl() {
 
 /* v8 ignore next -- @preserve */
 
-// EXTERNAL MODULE: external "node:crypto"
-var external_node_crypto_ = __nccwpck_require__(7598);
-;// CONCATENATED MODULE: ./node_modules/.pnpm/uuid@13.0.2/node_modules/uuid/dist-node/native.js
-
-/* harmony default export */ const dist_node_native = ({ randomUUID: external_node_crypto_.randomUUID });
-
-;// CONCATENATED MODULE: ./node_modules/.pnpm/uuid@13.0.2/node_modules/uuid/dist-node/rng.js
-
-const rnds8Pool = new Uint8Array(256);
-let poolPtr = rnds8Pool.length;
+;// CONCATENATED MODULE: ./node_modules/.pnpm/uuid@14.0.0/node_modules/uuid/dist-node/rng.js
+const rnds8 = new Uint8Array(16);
 function rng() {
-    if (poolPtr > rnds8Pool.length - 16) {
-        (0,external_node_crypto_.randomFillSync)(rnds8Pool);
-        poolPtr = 0;
-    }
-    return rnds8Pool.slice(poolPtr, (poolPtr += 16));
+    return crypto.getRandomValues(rnds8);
 }
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/uuid@13.0.2/node_modules/uuid/dist-node/stringify.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/uuid@14.0.0/node_modules/uuid/dist-node/stringify.js
 
 const byteToHex = [];
 for (let i = 0; i < 256; ++i) {
@@ -72250,10 +72238,15 @@ function stringify(arr, offset = 0) {
 }
 /* harmony default export */ const dist_node_stringify = ((/* unused pure expression or super */ null && (stringify)));
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/uuid@13.0.2/node_modules/uuid/dist-node/v4.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/uuid@14.0.0/node_modules/uuid/dist-node/v4.js
 
 
-
+function v4(options, buf, offset) {
+    if (!buf && !options && crypto.randomUUID) {
+        return crypto.randomUUID();
+    }
+    return _v4(options, buf, offset);
+}
 function _v4(options, buf, offset) {
     options = options || {};
     const rnds = options.random ?? options.rng?.() ?? rng();
@@ -72273,12 +72266,6 @@ function _v4(options, buf, offset) {
         return buf;
     }
     return unsafeStringify(rnds);
-}
-function v4(options, buf, offset) {
-    if (dist_node_native.randomUUID && !buf && !options) {
-        return dist_node_native.randomUUID();
-    }
-    return _v4(options, buf, offset);
 }
 /* harmony default export */ const dist_node_v4 = (v4);
 
