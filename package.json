@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
-    "@types/node": "24.13.2",
+    "@types/node": "24.13.3",
     "@vercel/ncc": "0.44.0",
     "eslint": "10.5.0",
     "prettier": "3.8.4",
